@@ -3,7 +3,7 @@ class Register {
     render() {
         return (
             <div>
-
+                register
             </div>
         );
     }
