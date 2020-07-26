@@ -1,56 +1,94 @@
 import React, {Component} from "react";
-class login extends Component{
+import axios from 'axios';
+
+class login extends Component {
     constructor() {
         super();
-        this.state={
-            username:'',
-            password:'',
-            show:false
+        this.state = {
+            email: '',
+            password: '',
+            show: false,
+            isShowSpinner: false
         }
     }
-    handleDismissle(){
+
+    handleDismissle() {
         this.setState({
             show: !this.state.show
         });
     }
-    handleLogin(){
-        alert(this.state.password);
+    enterHandle(e){
+        if(e.key === 'Enter' ){
+            this.handleLogin();
+        }
     }
-    handleChange(e){
-        this.setState({[e.target.name]:e.target.value})
-console.log(e.target.name)
+    handleLogin() {
+        axios.post('http://localhost/api/login', {
+            'email': this.state.email,
+            'password': this.state.password
+        }).then(res => {
+            this.setState({
+                isShowSpinner: false,
+            })
+            if (res.data.code != 200) {
+                this.setState({
+                    show: true,
+                },()=>{
+                    setTimeout(()=>{
+                        this.setState({show:false})
+                    },2000)
+                })
+            }
+
+        })
+        this.setState({
+            isShowSpinner: true
+        })
+    }
+
+    handleChange(e) {
+        this.setState({[e.target.name]: e.target.value})
     }
 
     render() {
-        const style={
-            height:'100vh',
-            width:'100vw'
+        const style = {
+            height: '100vh',
+            width: '100vw'
         }
         let alertBody;
-        if(this.state.show){
-            alertBody=<div class={'alert alert-danger'} dismissible onClose={()=>this.handleDismissle()}>This is aler</div>
+        if (this.state.show) {
+            alertBody =
+                <div class={'alert alert-danger'} dismissible onClose={() => this.handleDismissle()}>Invalid username or
+                    password !</div>
+        }
+        let spinner;
+        if (this.state.isShowSpinner) {
+            spinner = <div className="spinner-border text-primary"></div>
         }
         return (
-            <div style={style} className={"bg-dark"}>
-               <div  className={'container h-100'}>
-                   <div className={' row justify-content-center  align-items-center h-100'}>
-                       <div className={'col-3 align-self-center'}>
-                               <div className={'form-group'}>
-                                   <input type='text' name={'username'}   value={this.state.username} onChange={e=>this.handleChange(e)}  className={'form-control  text-center'} placeholder={'Username'}/>
-                               </div>
-                               <div className={'form-group'}>
-                                   <input type='password' name={'password'}  value={this.state.password} onChange={e=>this.handleChange(e)} className={'form-control text-center'} placeholder={'Password'}/>
-                               </div>
-                               <div className={'d-flex justify-content-center'}>
-                                   <button onClick={()=>this.handleLogin()} className={'btn btn-primary'}>Login</button>
-                               </div>
-                       </div>
-                       {alertBody}
-                   </div>
-               </div>
-            </div>
+            <div style={style} className={'container-fluid bg-dark'}>
+                <div className={'row align-items-center justify-content-center h-100'}>
+                    <div className={'col-3 text-center'}>
+                        <h3 className={'text-light mb-4'}>WELLCOME TO HELL!</h3>
+                        <div className={'form-group'}>
+                            <input onKeyDown={(e)=>this.enterHandle(e)} name={'email'} value={this.state.email} onChange={e=>this.handleChange(e)} className={'form-control text-center'} type={'email'} placeholder={'Email'}/>
+                        </div>
+                        <div className={'form-group '}>
+                            <input name={'password'} onKeyDown={(e)=>this.enterHandle(e)} value={this.state.password} onChange={e=>this.handleChange(e)} className={'form-control text-center'} type={'password'} placeholder={'Password'}/>
+                        </div>
+                        <div className={'form-group '}>
+                            <button onKeyDown={(e)=>this.enterHandle(e)}  onClick={() => this.handleLogin()} className={'btn btn-primary'}>Login</button>
+                        </div>
+                        <div style={{height:'20px'}} className={'form-group'}>
+                            {spinner}
+                            {alertBody}
+                        </div>
+                    </div>
 
+                </div>
+            </div>
         )
     }
 }
+
 export default login
