@@ -41,7 +41,8 @@ class login extends Component {
                     },2000)
                 })
             }else{
-                localStorage.setItem('access_token',res.data.access_token);
+                localStorage.setItem('access_token',res.data.data.access_token);
+                localStorage.setItem('user_name',<res className="data data user name"></res>);
                 this.setState({
                     isSuccess: true,
                 });
@@ -69,7 +70,7 @@ class login extends Component {
         let alertBody;
         if (this.state.show) {
             alertBody =
-                <div class={'alert alert-danger'} dismissible onClose={() => this.handleDismissle()}>Invalid username or
+                <div className={'alert alert-danger'} dismissible onClose={() => this.handleDismissle()}>Invalid username or
                     password !</div>
         }
         let spinner;

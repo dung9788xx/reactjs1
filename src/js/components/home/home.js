@@ -8,8 +8,10 @@ class Home extends React.Component {
     constructor() {
         super();
         this.state = ({
-            tables: null,
-            isLoading:true
+            rooms: null,
+            messages:[],
+            isLoading:true,
+            tableSelected:null
         });
     }
 
@@ -17,12 +19,44 @@ class Home extends React.Component {
         axios.get('http://localhost/api/rooms')
             .then(res => {
                 this.setState({
-                    tables: res.data.data,
-                    isLoading:false
+                    rooms: res.data.data,
+                    isLoading:false,
+                    tableSelected:res.data.data[0].id
                 })
             })
     }
+    logOut=()=>{
+        localStorage.removeItem('access_token');
+        this.forceUpdate();
+    }
+    roomClickHandle=(e)=>{
+        if(this.state.messages.length != 0){
+            let ishave=false;
+           for(var i=0; i<this.state.messages.length;i++){
+               if(parseInt(this.state.messages[i][0].room_id)===parseInt(e.target.dataset.roomid)){
+                   ishave=true;
+                   break;
 
+               }
+           }
+           if(ishave!=true){
+               axios.post('http://localhost/api/rooms/messages',{room_id:e.target.dataset.roomid})
+                   .then(res => {
+                       this.setState({
+                           messages:this.state.messages.concat([res.data.data])
+                       });
+                   })
+           }
+        }else{
+            axios.post('http://localhost/api/rooms/messages',{room_id:e.target.dataset.roomid})
+                .then(res => {
+                    this.setState({
+                        messages:this.state.messages.concat([res.data.data])
+                    });
+                })
+        }
+
+    }
     render() {
         const style = {
             height: '100vh',
@@ -30,31 +64,32 @@ class Home extends React.Component {
         }
         if (localStorage.getItem('access_token') != null) {
            if(!this.state.isLoading){
-               let tables = [];
-               if (this.state.tables) {
-                   tables = this.state.tables.map((table) => (
-                       <div className="border rounded mt-2"><div className={'p-3'}>{table.name}</div></div>
+               let rooms = [];
+               if (this.state.rooms) {
+                   rooms = this.state.rooms.map((room) => (
+                       <div  key={room.id}  className="border rounded mt-2"><div data-roomid={room.id}  key={room.id}  onClick={(e)=>this.roomClickHandle(e)} className={'p-3'}>{room.name}</div></div>
                    ));
                }
 
                return (
                    <div style={style} className={'container-fluid bg-dark'}>
-                       <div style = {{height: '5%'}} className='row'>
-                           <div className='col-2 text-white text-center '>
+                       <div style = {{height: '7%'}} className='row'>
+                           <div className='col-2 text-white align-self-center text-center  '>
                                HELL
                            </div>
-                           <div className='col-12'>
-
+                           <div className='col-10 d-flex align-self-center justify-content-end'>
+                               <button style={{height:'40px'}} onClick={this.logOut} className='btn btn-dark text-danger'>Đăng xuất</button>
                            </div>
                        </div>
-                       <div style = {{height: '95%'}} className={'row'}>
-                           <div className={'col-2 rounded-right bg-white h-100'}>
+                       <div style = {{height: '93%'}} className={'row'}>
+                           <div className={'col-2  rounded-right bg-white h-100'}>
                                <div className="text-black ">
-                                   {tables}
+                                   {rooms}
                                </div>
                            </div>
                            <div className={'col-10 '}>
-                            <div className='bg-white rounded h-100'>
+                            <div className='row ml-1 mr-1 bg-white rounded h-100'>
+                                {this.state.messages.length}
                             </div>
                            </div>
                        </div>

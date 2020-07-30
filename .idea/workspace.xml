@@ -5,7 +5,6 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/js/components/home/home.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/components/home/home.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/js/components/login/login.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/components/login/login.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/components/register/register.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/components/register/register.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -90,7 +89,7 @@
       <workItem from="1595702866979" duration="706000" />
       <workItem from="1595893862256" duration="886000" />
       <workItem from="1595902947152" duration="15000" />
-      <workItem from="1596078398469" duration="7536000" />
+      <workItem from="1596078398469" duration="17042000" />
     </task>
     <servers />
   </component>
