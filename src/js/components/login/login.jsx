@@ -32,7 +32,7 @@ class login extends Component {
             this.setState({
                 isShowSpinner: false,
             })
-            if (res.data.code != 200) {
+            if (res.data.code !== 200) {
                 this.setState({
                     show: true,
                 },()=>{
@@ -41,7 +41,7 @@ class login extends Component {
                     },2000)
                 })
             }else{
-                localStorage.setItem('token','abcdefg')
+                localStorage.setItem('access_token',res.data.access_token);
                 this.setState({
                     isSuccess: true,
                 });
