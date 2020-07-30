@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import {Redirect} from 'react-router-dom'
 import axios from 'axios';
 
 class login extends Component {
@@ -8,6 +9,7 @@ class login extends Component {
             email: '',
             password: '',
             show: false,
+            isSuccess:false,
             isShowSpinner: false
         }
     }
@@ -38,6 +40,12 @@ class login extends Component {
                         this.setState({show:false})
                     },2000)
                 })
+            }else{
+                localStorage.setItem('token','abcdefg')
+                this.setState({
+                    isSuccess: true,
+                });
+
             }
 
         })
@@ -51,6 +59,9 @@ class login extends Component {
     }
 
     render() {
+        if(this.state.isSuccess){
+            return <Redirect to="/" />
+        }
         const style = {
             height: '100vh',
             width: '100vw'

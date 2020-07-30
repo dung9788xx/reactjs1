@@ -1,5 +1,5 @@
 import React,{Component} from "react";
-class Register {
+class Register extends React.Component{
     render() {
         return (
             <div>
