@@ -10,7 +10,8 @@ class login extends Component {
             password: '',
             show: false,
             isSuccess:false,
-            isShowSpinner: false
+            isShowSpinner: false,
+            errorMessage:''
         }
     }
 
@@ -35,6 +36,7 @@ class login extends Component {
             if (res.data.code !== 200) {
                 this.setState({
                     show: true,
+                    errorMessage:'Invalid username or password !'
                 },()=>{
                     setTimeout(()=>{
                         this.setState({show:false})
@@ -48,6 +50,20 @@ class login extends Component {
                 });
 
             }
+
+        }).catch(e=>{
+            this.setState({
+                isShowSpinner: false,
+            })
+
+                this.setState({
+                    show: true,
+                    errorMessage:'Please check your network connect!'
+                },()=>{
+                    setTimeout(()=>{
+                        this.setState({show:false})
+                    },2000)
+                })
 
         })
         this.setState({
@@ -70,8 +86,7 @@ class login extends Component {
         let alertBody;
         if (this.state.show) {
             alertBody =
-                <div className={'alert alert-danger'} dismissible onClose={() => this.handleDismissle()}>Invalid username or
-                    password !</div>
+                <div className={'alert alert-danger'} dismissible onClose={() => this.handleDismissle()}>{this.state.errorMessage}</div>
         }
         let spinner;
         if (this.state.isShowSpinner) {
