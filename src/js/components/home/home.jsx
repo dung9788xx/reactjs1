@@ -111,6 +111,7 @@ class Home extends React.Component {
                             {productCategoryMenu}
                             <NavDropdown title="Xem thêm" id="nav-dropdown">
                                 {dropdownProductCategory}
+                                123
                             </NavDropdown>
 
                         </div>
