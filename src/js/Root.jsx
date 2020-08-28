@@ -3,16 +3,29 @@ import Login from "./components/login/login";
 import Register from "./components/register/register";
 import Home from "./components/home/home.jsx";
 import Product from "./components/products/product";
+import Header from "./components/header/header";
 import  {BrowserRouter as Router,Route} from 'react-router-dom'
 class Root extends Component{
+    constructor() {
+        super();
+        this.state = ({
+            activeKey: 1,
+        });
+    }
+    handleSelect = (eventKey) => {
+        this.setState({activeKey: eventKey});
+    }
     render() {
         return (
-            <Router>
-                <Route exact path='/' component={Home}/>
-                <Route path='/register' component={Register}/>
-                <Route path='/login' component={Login}/>
-                <Route path='/quan-ao-nam' component={Product}/>
-            </Router>
+           <div>
+               <Router>
+                   <Header handleSelectMenu={this.handleSelect} activeKey={this.state.activeKey}/>
+                   <Route exact path='/' component={Home}/>
+                   <Route path='/register' component={Register}/>
+                   <Route path='/login' component={Login}/>
+                   <Route path='/productCategory/:id' render={(props)=><Product category_id={props.match.params.id}  />}/>
+               </Router>
+           </div>
         )
     }
 }

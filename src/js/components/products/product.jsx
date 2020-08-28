@@ -1,20 +1,21 @@
 import React from "react";
 import axios from "axios";
+import {Link } from "react-router-dom";
 import {API} from "../constConfig/apiConfig";
-
+import {  useParams } from 'react-router-dom';
 class Product extends React.Component {
     constructor(props) {
         super(props);
         this.state = ({
             isLoading: true,
-            category_id: this.props.productCategory,
+            category_id:props.category_id,
             products: []
         })
-    }
 
+    }
     componentWillReceiveProps(nextProps, nextContext) {
         this.setState({
-            isLoading:true,
+            isLoading: true,
             products: [],
             category_id: nextProps.productCategory
         }, () => {
@@ -43,30 +44,41 @@ class Product extends React.Component {
     componentDidMount() {
         this.fetchDat();
     }
+    changeColor=(e)=>{
+            e.currentTarget.classList.add('bg-light')
+    }
 
     render() {
+
+        const cardStyle = {
+            height:'24rem',
+            width:'28rem'
+        }
         const imgStyle = {
-            height: '11rem',
-            width: '10rem',
-            'object-fit': 'contain'
+            height: '14rem',
+            'maxWidth': '14rem',
+            'objectFit': 'cover'
         }
         let product = this.state.products.map((product, index) => {
             return (
-                <div className="col-2 card m-2">
-                    <img style={imgStyle} className="card-img-top"
-                         src="https://img.docbao.vn/images/uploads/2019/08/30/photo-2-15671450584281783784590.jpg"
-                         alt="Card image cap"/>
-                    <hr/>
-                    <div className="card-body">
-                        <div>
-                            {product.name}
-                        </div>
-                        <div>
-                                    <span className='text-danger'>
-                                        {product.price}
-                                    </span>
-                        </div>
-                    </div>
+                <div key={index} style={cardStyle} onClick={()=>{  this.props.history.push('/');
+                }}  onMouseOver={this.changeColor} onMouseOut={(e)=>e.currentTarget.classList.remove('bg-light')}  className="col-12 col-sm-4 col-md-3 col-lg-2 p-0 m-2 card shadow rounded ">
+                <div className='row justify-content-center'>
+
+                       <img style={imgStyle} className="overflow-hidden col-12"
+                            src="https://img.docbao.vn/images/uploads/2019/08/30/photo-2-15671450584281783784590.jpg"
+                            alt="Card image cap"/>
+                       <div className="col-12">
+                           <div>
+                               {product.name}
+                           </div>
+                           <div>
+                            <span className='text-danger'>
+                            {product.price}
+                            </span>
+                           </div>
+                       </div>
+                </div>
                 </div>
             )
         })
@@ -76,7 +88,7 @@ class Product extends React.Component {
         }
         if (this.state.isLoading) {
             return (
-                <div style={style} className=' container-fluid'>
+                <div style={style} className=' container'>
                     <div className='row justify-content-center h-100 '>
                         <div style={{width: '5rem', height: '5rem'}}
                              className="spinner-border text-info align-self-center" role="status">
@@ -84,26 +96,24 @@ class Product extends React.Component {
                     </div>
                 </div>
             )
-
         } else {
             if (this.state.products.length != 0) {
                 return (
-                    <div className='container'>
-                        <div className='row pl-5 ml-2 '>
-                            {product}
-                            {product}
-                            {product}
-                            {product}
-                            {product}
-                            {product}
-                            {product}
-
-                        </div>
+                    <div className='container-fluid pl-5'>
+                          <div className='row ml-5 '>
+                                        {product}
+                                        {product}
+                                        {product}
+                                        {product}
+                                        {product}
+                                        {product}
+                                        {product}
+                                </div>
                     </div>
                 );
             } else {
                 return (
-                    <div style={style} className='container-fluid'>
+                    <div style={style} className='container'>
                         <div className='row justify-content-center h-100 '>
                             <div className=' align-self-center'>Không có sản phẩm nào !</div>
                         </div>
