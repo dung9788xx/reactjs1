@@ -9,11 +9,12 @@ class Root extends Component{
     constructor() {
         super();
         this.state = ({
-            activeKey: 1,
+            activeKey: sessionStorage.getItem('activeKey') ?? 0,
         });
+
     }
     handleSelect = (eventKey) => {
-        this.setState({activeKey: eventKey});
+        sessionStorage.setItem('activeKey',eventKey)
     }
     render() {
         return (

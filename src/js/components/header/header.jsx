@@ -7,7 +7,7 @@ class Header extends React.Component{
     constructor(props) {
         super(props);
         this.state = ({
-            productCategories: null,
+            productCategories:JSON.parse(localStorage.getItem("categories"))?? null,
             activeKey: props.activeKey,
             searchInput: '',
             isSearch: false,
@@ -24,10 +24,13 @@ class Header extends React.Component{
     componentDidMount() {
         axios.get(API + '/list-product-category')
             .then(res => {
-                this.setState({
-                    isLoading: false,
-                    productCategories: res.data.data,
-                })
+                if(localStorage.getItem('categories')!=res.data.data) {
+                    localStorage.setItem('categories',JSON.stringify( res.data.data))
+                    this.setState({
+                        isLoading: false,
+                        productCategories: res.data.data,
+                    })
+                }else alert('b')
             })
             .catch(e =>
                 alert(e)
